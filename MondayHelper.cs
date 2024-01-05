@@ -20,6 +20,17 @@ public class MondayHelper
         };
         _client = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer(), _httpClient);
     }
+        public MondayHelper(string apiToken, string? endpoint = "https://api.monday.com/v2", string? apiVersion = "2024-01")
+    {
+        _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiToken);
+        _httpClient.DefaultRequestHeaders.Add("API-Version", apiVersion);
+        GraphQLHttpClientOptions options = new GraphQLHttpClientOptions
+        {
+            EndPoint = new Uri(endpoint)
+        };
+        _client = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer(), _httpClient);
+    }
 
     public async Task<dynamic> LookupItemAsync(string lookupItemID)
     {
@@ -75,6 +86,7 @@ public class MondayHelper
         string revReportItemID = response.Data.create_item.id;
         return revReportItemID;
     }
+
     public async Task<string> ChangeMultipleColumnValuesAsync(string itemID, string boardID, Dictionary<string, string> columnValues)
     {
         var graphQLQuery = new GraphQLRequest
@@ -94,7 +106,6 @@ public class MondayHelper
 
     public async Task<string> ChangeSimpleColumnValueAsync(string itemID, string boardID, string columnID, string strValue)
     {
-
         var graphQLQuery = new GraphQLRequest
         {
             Query = $@"mutation {{
