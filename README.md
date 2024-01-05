@@ -17,9 +17,19 @@ Include `MondayHelper` in your project by adding it as a dependency in your proj
 
 ## Usage
 ### Initializing the Client
+By default, MondayHelper is using https://api.monday.com/v2 as an endpoint and API version 2024-01.
 ```csharp
 var apiToken = "your_api_token";
 var mondayHelper = new MondayHelper(apiToken);
+```
+
+### Initializing the Client w/ Specific API Version
+You can choose different versions or endpoints on initialization.
+```csharp
+var apiToken = "your_api_token";
+var endpoint = "https://api.monday.com/v2";
+var apiVersion = "2023-10";
+var mondayHelper = new MondayHelper(apiToken, endpoint, apiVersion);
 ```
 
 ### Lookup Item
