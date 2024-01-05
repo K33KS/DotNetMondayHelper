@@ -9,18 +9,7 @@ public class MondayHelper
     private readonly IGraphQLClient _client;
     private readonly HttpClient _httpClient;
 
-    public MondayHelper(string apiToken)
-    {
-        _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiToken);
-        _httpClient.DefaultRequestHeaders.Add("API-Version", "2024-01");
-        GraphQLHttpClientOptions options = new GraphQLHttpClientOptions
-        {
-            EndPoint = new Uri("https://api.monday.com/v2")
-        };
-        _client = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer(), _httpClient);
-    }
-        public MondayHelper(string apiToken, string? endpoint = "https://api.monday.com/v2", string? apiVersion = "2024-01")
+    public MondayHelper(string apiToken, string? endpoint = "https://api.monday.com/v2", string? apiVersion = "2024-01")
     {
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiToken);
