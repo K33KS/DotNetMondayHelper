@@ -66,4 +66,7 @@ Contributions to improve `MondayHelper` are always welcome. Please feel free to 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Contact
-[https://github.com/K33KS]
+<a href="https://github.com/K33KS">Keenan DeAngelis</a><br/>
+<a href="https://github.com/K33KS">DEEGEETEK LLC</a><br/>
+<a href="mailto:deegeetek@gmail.com">Contact me</a><br/>
+
