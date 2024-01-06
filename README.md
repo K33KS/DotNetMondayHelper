@@ -78,5 +78,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 <a href="https://github.com/K33KS">Keenan DeAngelis</a><br/>
 <a href="https://deegeetek.com">DEEGEETEK LLC</a><br/>
-<a href="mailto:deegeetek@gmail.com">Contact me</a><br/>
+![Visitor Count](https://profile-counter.glitch.me/{YOUR USER}/count.svg)
 
