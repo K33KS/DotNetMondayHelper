@@ -9,7 +9,7 @@ public class MondayHelper
     private readonly IGraphQLClient _client;
     private readonly HttpClient _httpClient;
 
-    public MondayHelper(string apiToken, string? endpoint = "https://api.monday.com/v2", string? apiVersion = "2024-01")
+    public MondayHelper(string apiToken, string? endpoint = "https://api.monday.com/v2", string? apiVersion = "2023-10")
     {
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiToken);
@@ -28,22 +28,22 @@ public class MondayHelper
             //Those mirror column and board relation values are a bit wacky to handle
             //Need to find a better way to trigger the case
             Query = @"query {
-                items (ids: " + lookupItemID + @") 
-                {
-                    name 
-                    state
-                    id
-                    parent_item {id}
-                    group {id title}
-                    column_values 
-                    {
-                        column{title id}
-                        ... on MirrorValue {display_value text}
-                        ... on BoardRelationValue {display_value}
-                        value text
-                    }
-                }
-            }",
+    items (ids: " + lookupItemID + @") 
+    {
+        name 
+        state
+        id
+        parent_item {id}
+        group {id title}
+        column_values 
+        {
+            column{title id}
+            ... on MirrorValue {display_value text}
+            ... on BoardRelationValue {display_value}
+            value text
+        }
+    }
+}",
         };
         try
         {
@@ -59,6 +59,43 @@ public class MondayHelper
         }
     }
 
+    public async Task<dynamic> GetMyAccountInfo()
+    {
+        var graphQLQuery = new GraphQLRequest
+        {
+            Query = @"query {
+  me{
+    id
+    name
+    enabled
+    is_admin
+    is_guest
+    email
+    created_at
+    join_date
+    birthday
+    photo_small
+    photo_original
+    photo_thumb_small
+  }
+  account {
+      id
+      name
+      logo
+      show_timeline_weekends
+      tier 
+      slug
+      tier
+      plan {
+        period
+      }
+    }
+}",
+        };
+        var response = await _client.SendQueryAsync<dynamic>(graphQLQuery);
+        return response;
+    }
+
     public async Task<string> CreateItemAsync(string itemName, string boardID, Dictionary<string, string> columnValues)
     {
         var graphQLQuery = new GraphQLRequest
@@ -72,8 +109,8 @@ public class MondayHelper
         };
 
         var response = await _client.SendQueryAsync<dynamic>(graphQLQuery);
-        string revReportItemID = response.Data.create_item.id;
-        return revReportItemID;
+        string itemID = response.Data.create_item.id;
+        return itemID;
     }
 
     public async Task<string> ChangeMultipleColumnValuesAsync(string itemID, string boardID, Dictionary<string, string> columnValues)
@@ -89,8 +126,7 @@ public class MondayHelper
         };
 
         var response = await _client.SendQueryAsync<dynamic>(graphQLQuery);
-        string revReportItemID = response.Data.change_multiple_column_values.id;
-        return revReportItemID;
+        return response.Data.change_multiple_column_values.id;
     }
 
     public async Task<string> ChangeSimpleColumnValueAsync(string itemID, string boardID, string columnID, string strValue)
@@ -104,7 +140,6 @@ public class MondayHelper
         };
 
         var response = await _client.SendQueryAsync<dynamic>(graphQLQuery);
-        string revReportItemID = response.Data.change_multiple_column_values.id;
-        return revReportItemID;
+        return response.Data.change_multiple_column_values.id;
     }
 }
